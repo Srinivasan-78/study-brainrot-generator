@@ -115,21 +115,44 @@ def ass_timestamp(seconds):
     return f"{h:d}:{m:02d}:{s:02d}.{cs:02d}"
 
 
+def ass_escape(text):
+    """Strip the characters libass reads as markup so a word renders literally."""
+    return (
+        text.replace("\\", "")
+        .replace("{", "")
+        .replace("}", "")
+        .replace("\n", " ")
+        .replace("\r", " ")
+    )
+
+
 def build_ass(boundaries, path, offset=0.0):
-    """Word-level karaoke captions: each word fills in as it is spoken."""
+    """Word-level karaoke captions: each word fills in as it is spoken.
+
+    \\k durations run back to back from the line's Start time, so the pauses
+    between words have to be paid for explicitly — otherwise the highlight runs
+    ahead of the voice and the drift compounds across the line. The gap before
+    each word is charged to the space that precedes it.
+    """
     lines = [ASS_HEADER]
     for i in range(0, len(boundaries), WORDS_PER_LINE):
         group = boundaries[i:i + WORDS_PER_LINE]
         start = group[0]["offset_s"] + offset
         end = group[-1]["offset_s"] + group[-1]["duration_s"] + offset
         parts = []
-        for w in group:
+        cursor = group[0]["offset_s"]
+        for j, w in enumerate(group):
+            gap = max(int(round((w["offset_s"] - cursor) * 100)), 0)
             k = max(int(round(w["duration_s"] * 100)), 1)
-            text = w["text"].replace("{", "").replace("}", "").replace("\n", " ")
-            parts.append(f"{{\\k{k}}}{text}")
+            text = ass_escape(w["text"])
+            if j == 0:
+                parts.append(f"{{\\k{k}}}{text}")
+            else:
+                parts.append(f"{{\\k{gap}}} {{\\k{k}}}{text}")
+            cursor = w["offset_s"] + w["duration_s"]
         lines.append(
             f"Dialogue: 0,{ass_timestamp(start)},{ass_timestamp(end)},Default,,0,0,0,,"
-            + " ".join(parts)
+            + "".join(parts)
         )
     with open(path, "w", encoding="utf-8") as f:
         f.write("\n".join(lines) + "\n")
@@ -138,7 +161,8 @@ def build_ass(boundaries, path, offset=0.0):
 def write_concat_list(paths, list_path):
     with open(list_path, "w", encoding="utf-8") as f:
         for p in paths:
-            f.write(f"file '{os.path.abspath(p)}'\n")
+            escaped = os.path.abspath(p).replace("'", r"'\''")
+            f.write(f"file '{escaped}'\n")
     return list_path
 
 
@@ -165,7 +189,7 @@ def rotated_list(playlist, durations, seek, list_path):
     return list_path, remaining
 
 
-def make_segment(index, audio_path, boundaries_path, bg_list, out_path, seek=0.0, trim=0.0):
+def make_segment(index, audio_path, boundaries_path, bg_list, out_path, trim=0.0):
     speech = get_duration(audio_path)
     duration = speech + LEAD_IN + TAIL
 
@@ -244,6 +268,9 @@ def main():
 
     clip_durations = {p: get_duration(p) for p in playlist}
     series_duration = sum(clip_durations.values())
+    if series_duration <= 0:
+        print("ERROR: background series has zero total duration", file=sys.stderr)
+        sys.exit(1)
     print(f"[assemble] series timeline: {series_duration:.0f}s total")
 
     seek = 0.0
@@ -261,7 +288,7 @@ def main():
         )
         print(f"[assemble] segment {i + 1}/{n_chunks}: series @ {seek:.1f}s")
         used = make_segment(
-            i, audio_path, boundaries_path, bg_list, out_path, seek=seek, trim=trim
+            i, audio_path, boundaries_path, bg_list, out_path, trim=trim
         )
         seek = (seek + used) % series_duration
         segment_paths.append(out_path)
