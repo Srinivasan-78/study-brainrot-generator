@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 470" width="900" height="470" font-family="DejaVu Sans, Verdana, sans-serif">
+  <rect width="900" height="470" rx="14" fill="#0f1225"/>
+  <text x="450" y="36" text-anchor="middle" fill="#ffe27a" font-size="21" font-weight="bold">Karaoke Captions: words light up as the voice says them</text>
+
+  <!-- phone 1 -->
+  <g>
+    <rect x="60" y="60" width="200" height="356" rx="22" fill="#1b2140" stroke="#4d7cff" stroke-width="3"/>
+    <rect x="72" y="76" width="176" height="324" rx="14" fill="#2b3560"/>
+    <text x="160" y="215" text-anchor="middle" font-size="40">🌊</text>
+    <text x="160" y="330" text-anchor="middle" font-size="21" font-weight="bold" fill="#ffe27a">MITOCHONDRIA</text>
+    <text x="160" y="356" text-anchor="middle" font-size="21" font-weight="bold" fill="#ffffff">IS THE</text>
+    <text x="160" y="440" text-anchor="middle" fill="#9fb0e0" font-size="13">0.0s — 0.4s</text>
+  </g>
+
+  <!-- phone 2 -->
+  <g>
+    <rect x="350" y="60" width="200" height="356" rx="22" fill="#1b2140" stroke="#7c5cff" stroke-width="3"/>
+    <rect x="362" y="76" width="176" height="324" rx="14" fill="#2b3560"/>
+    <text x="450" y="215" text-anchor="middle" font-size="40">🌊</text>
+    <text x="450" y="330" text-anchor="middle" font-size="21" font-weight="bold" fill="#ffe27a">MITOCHONDRIA</text>
+    <text x="450" y="356" text-anchor="middle" font-size="21" font-weight="bold" fill="#ffe27a">IS</text>
+    <text x="486" y="356" text-anchor="middle" font-size="21" font-weight="bold" fill="#ffffff">THE</text>
+    <text x="450" y="440" text-anchor="middle" fill="#9fb0e0" font-size="13">0.4s — 0.6s</text>
+  </g>
+
+  <!-- phone 3 -->
+  <g>
+    <rect x="640" y="60" width="200" height="356" rx="22" fill="#1b2140" stroke="#28c98a" stroke-width="3"/>
+    <rect x="652" y="76" width="176" height="324" rx="14" fill="#2b3560"/>
+    <text x="740" y="215" text-anchor="middle" font-size="40">🌊</text>
+    <text x="740" y="330" text-anchor="middle" font-size="21" font-weight="bold" fill="#ffe27a">MITOCHONDRIA</text>
+    <text x="740" y="356" text-anchor="middle" font-size="21" font-weight="bold" fill="#ffe27a">IS THE</text>
+    <text x="740" y="440" text-anchor="middle" fill="#9fb0e0" font-size="13">0.6s — 0.9s</text>
+  </g>
+
+  <text x="450" y="463" text-anchor="middle" fill="#7f8cc0" font-size="12">Yellow = already spoken. White = not yet. Three words per line, always.</text>
+</svg>

@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 330" width="900" height="330" font-family="DejaVu Sans, Verdana, sans-serif">
+  <rect width="900" height="330" rx="14" fill="#0f1225"/>
+  <text x="450" y="34" text-anchor="middle" fill="#ffe27a" font-size="21" font-weight="bold">Packing chunks into videos (like fitting boxes in a suitcase)</text>
+  <text x="450" y="58" text-anchor="middle" fill="#9fb0e0" font-size="13">Each suitcase holds 55 seconds. A box is NEVER cut in half.</text>
+
+  <!-- suitcase 1 -->
+  <rect x="40" y="80" width="390" height="90" rx="10" fill="#161c36" stroke="#4d7cff" stroke-width="2"/>
+  <text x="52" y="102" fill="#8ea3e0" font-size="12">output_01.mp4 — 52s</text>
+  <g fill="#4d7cff">
+    <rect x="52" y="112" width="60" height="44" rx="6"/><rect x="118" y="112" width="72" height="44" rx="6"/>
+    <rect x="196" y="112" width="56" height="44" rx="6"/><rect x="258" y="112" width="68" height="44" rx="6"/>
+    <rect x="332" y="112" width="64" height="44" rx="6"/>
+  </g>
+  <g fill="#0f1225" font-size="12" text-anchor="middle" font-weight="bold">
+    <text x="82" y="140">1</text><text x="154" y="140">2</text><text x="224" y="140">3</text><text x="292" y="140">4</text><text x="364" y="140">5</text>
+  </g>
+  <rect x="400" y="112" width="22" height="44" rx="6" fill="#2a3358"/>
+  <text x="411" y="140" text-anchor="middle" fill="#7f8cc0" font-size="11">3s</text>
+
+  <!-- suitcase 2 -->
+  <rect x="470" y="80" width="390" height="90" rx="10" fill="#161c36" stroke="#28c98a" stroke-width="2"/>
+  <text x="482" y="102" fill="#8ea3e0" font-size="12">output_02.mp4 — 49s</text>
+  <g fill="#28c98a">
+    <rect x="482" y="112" width="70" height="44" rx="6"/><rect x="558" y="112" width="58" height="44" rx="6"/>
+    <rect x="622" y="112" width="66" height="44" rx="6"/><rect x="694" y="112" width="60" height="44" rx="6"/>
+  </g>
+  <g fill="#0f1225" font-size="12" text-anchor="middle" font-weight="bold">
+    <text x="517" y="140">6</text><text x="587" y="140">7</text><text x="655" y="140">8</text><text x="724" y="140">9</text>
+  </g>
+  <rect x="760" y="112" width="90" height="44" rx="6" fill="#2a3358"/>
+  <text x="805" y="140" text-anchor="middle" fill="#7f8cc0" font-size="11">room left</text>
+
+  <!-- explanation -->
+  <rect x="40" y="196" width="820" height="106" rx="10" fill="#161c36"/>
+  <text x="60" y="222" fill="#e8ecff" font-size="14" font-weight="bold">Why box 6 moved to the second suitcase:</text>
+  <text x="60" y="248" fill="#9fb0e0" font-size="13">Suitcase 1 was at 52s. Box 6 is 11s long. 52 + 11 = 63s, which is over the 55s limit.</text>
+  <text x="60" y="270" fill="#9fb0e0" font-size="13">Cutting box 6 in half would chop a sentence mid-word, so the whole box goes in the next suitcase.</text>
+  <text x="60" y="292" fill="#7f8cc0" font-size="12">Change the limit with the MAX_VIDEO_SECONDS repo variable.</text>
+</svg>

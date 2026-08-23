@@ -1,0 +1,67 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 980 300" width="980" height="300" font-family="DejaVu Sans, Verdana, sans-serif">
+  <rect width="980" height="300" rx="14" fill="#0f1225"/>
+  <text x="490" y="38" text-anchor="middle" fill="#ffe27a" font-size="22" font-weight="bold">The Video Factory Line</text>
+
+  <!-- boxes -->
+  <g>
+    <rect x="26" y="70" width="150" height="120" rx="12" fill="#1d2547" stroke="#4d7cff" stroke-width="2"/>
+    <text x="101" y="105" text-anchor="middle" font-size="34">📚</text>
+    <text x="101" y="135" text-anchor="middle" fill="#e8ecff" font-size="14" font-weight="bold">research.py</text>
+    <text x="101" y="156" text-anchor="middle" fill="#9fb0e0" font-size="12">Reads Wikipedia</text>
+    <text x="101" y="173" text-anchor="middle" fill="#9fb0e0" font-size="12">about your topic</text>
+  </g>
+
+  <g>
+    <rect x="222" y="70" width="150" height="120" rx="12" fill="#1d2547" stroke="#7c5cff" stroke-width="2"/>
+    <text x="297" y="105" text-anchor="middle" font-size="34">✍️</text>
+    <text x="297" y="135" text-anchor="middle" fill="#e8ecff" font-size="14" font-weight="bold">script_gen.py</text>
+    <text x="297" y="156" text-anchor="middle" fill="#9fb0e0" font-size="12">AI writes 12 tiny</text>
+    <text x="297" y="173" text-anchor="middle" fill="#9fb0e0" font-size="12">punchy lessons</text>
+  </g>
+
+  <g>
+    <rect x="418" y="70" width="150" height="120" rx="12" fill="#1d2547" stroke="#ff5ca8" stroke-width="2"/>
+    <text x="493" y="105" text-anchor="middle" font-size="34">🎙️</text>
+    <text x="493" y="135" text-anchor="middle" fill="#e8ecff" font-size="14" font-weight="bold">voice_gen.py</text>
+    <text x="493" y="156" text-anchor="middle" fill="#9fb0e0" font-size="12">Robot reads them</text>
+    <text x="493" y="173" text-anchor="middle" fill="#9fb0e0" font-size="12">+ stopwatch times</text>
+  </g>
+
+  <g>
+    <rect x="614" y="70" width="150" height="120" rx="12" fill="#1d2547" stroke="#28c98a" stroke-width="2"/>
+    <text x="689" y="105" text-anchor="middle" font-size="34">🎬</text>
+    <text x="689" y="135" text-anchor="middle" fill="#e8ecff" font-size="14" font-weight="bold">assemble.py</text>
+    <text x="689" y="156" text-anchor="middle" fill="#9fb0e0" font-size="12">Glues video, voice</text>
+    <text x="689" y="173" text-anchor="middle" fill="#9fb0e0" font-size="12">and captions</text>
+  </g>
+
+  <g>
+    <rect x="810" y="70" width="146" height="120" rx="12" fill="#22314f" stroke="#ffe27a" stroke-width="2"/>
+    <text x="883" y="105" text-anchor="middle" font-size="34">📱</text>
+    <text x="883" y="135" text-anchor="middle" fill="#ffe27a" font-size="14" font-weight="bold">output_01.mp4</text>
+    <text x="883" y="156" text-anchor="middle" fill="#9fb0e0" font-size="12">output_02.mp4 …</text>
+    <text x="883" y="173" text-anchor="middle" fill="#9fb0e0" font-size="12">ready to watch</text>
+  </g>
+
+  <!-- arrows -->
+  <g stroke="#6f7fb5" stroke-width="3" fill="none" marker-end="url(#a)">
+    <path d="M180 130 H214"/>
+    <path d="M376 130 H410"/>
+    <path d="M572 130 H606"/>
+    <path d="M768 130 H802"/>
+  </g>
+  <defs>
+    <marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="#6f7fb5"/>
+    </marker>
+  </defs>
+
+  <!-- files passed along -->
+  <text x="101" y="222" text-anchor="middle" fill="#7f8cc0" font-size="11">research.txt</text>
+  <text x="297" y="222" text-anchor="middle" fill="#7f8cc0" font-size="11">script.json</text>
+  <text x="493" y="222" text-anchor="middle" fill="#7f8cc0" font-size="11">chunk_00.mp3 + .json</text>
+  <text x="689" y="222" text-anchor="middle" fill="#7f8cc0" font-size="11">segments/*.mp4</text>
+
+  <rect x="26" y="244" width="930" height="38" rx="10" fill="#161c36"/>
+  <text x="491" y="268" text-anchor="middle" fill="#9fb0e0" font-size="13">Each machine writes a file into build/ and the next machine picks it up. Nothing talks directly.</text>
+</svg>
