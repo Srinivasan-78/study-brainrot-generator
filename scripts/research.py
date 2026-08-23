@@ -6,6 +6,7 @@ import time
 import requests
 
 WIKI_API_URL = "https://en.wikipedia.org/w/api.php"
+MAX_RESEARCH_CHARS = 15000  # bound LLM input size
 
 SESSION = requests.Session()
 SESSION.headers.update(
@@ -13,32 +14,79 @@ SESSION.headers.update(
 )
 
 
-def wiki_search(topic, limit=3):
-    params = {
-        "action": "query",
-        "list": "search",
-        "srsearch": topic,
-        "format": "json",
-        "srlimit": limit,
-    }
-    r = SESSION.get(WIKI_API_URL, params=params, timeout=15)
+def wiki_get(params):
+    """GET the API and surface an API-level error as a RequestException."""
+    r = SESSION.get(WIKI_API_URL, params={**params, "format": "json"}, timeout=15)
     r.raise_for_status()
-    return [item["title"] for item in r.json()["query"]["search"]]
+    try:
+        payload = r.json()
+    except ValueError as e:
+        raise requests.RequestException(f"non-JSON response: {e}") from e
+    if "error" in payload:
+        info = payload["error"].get("info", payload["error"])
+        raise requests.RequestException(f"Wikipedia API error: {info}")
+    return payload
+
+
+def wiki_search(topic, limit=3):
+    # Over-fetch: disambiguation hits are dropped below and would otherwise
+    # leave the script grounded on fewer articles than asked for.
+    payload = wiki_get(
+        {
+            "action": "query",
+            "list": "search",
+            "srsearch": topic,
+            "srlimit": limit + 2,
+        }
+    )
+    results = payload.get("query", {}).get("search", [])
+    titles = [
+        item["title"]
+        for item in results
+        if item.get("title") and "(disambiguation)" not in item["title"]
+    ]
+    return titles[:limit]
 
 
 def wiki_extract(title):
-    params = {
-        "action": "query",
-        "prop": "extracts",
-        "explaintext": 1,
-        "titles": title,
-        "format": "json",
-    }
-    r = SESSION.get(WIKI_API_URL, params=params, timeout=15)
-    r.raise_for_status()
-    pages = r.json()["query"]["pages"]
+    # exlimit is fixed at 1: the API only allows batching extracts when they are
+    # truncated to the intro, and the full article text is what grounds the script.
+    payload = wiki_get(
+        {
+            "action": "query",
+            "prop": "extracts",
+            "explaintext": 1,
+            "exsectionformat": "plain",
+            "redirects": 1,
+            "titles": title,
+        }
+    )
+    pages = payload.get("query", {}).get("pages", {})
+    if not pages:
+        return ""
     page = next(iter(pages.values()))
+    if "missing" in page:
+        return ""
     return page.get("extract", "")
+
+
+def pack(chunks, budget):
+    """Trim sources to fit `budget` without letting the first one eat it all.
+
+    Truncating the joined text would drop later sources entirely whenever the
+    lead article is long, so each source gets an equal share and whatever the
+    short ones don't use is handed back to the long ones.
+    """
+    if not chunks:
+        return []
+    remaining = budget
+    packed = [None] * len(chunks)
+    # Shortest first, so every source it fits releases its unused share.
+    for rank, (i, text) in enumerate(sorted(enumerate(chunks), key=lambda t: len(t[1]))):
+        share = remaining // (len(chunks) - rank)
+        packed[i] = text[:share]
+        remaining -= len(packed[i])
+    return [t for t in packed if t]
 
 
 def main():
@@ -59,13 +107,15 @@ def main():
         sys.exit(1)
 
     chunks = []
+    seen = set()
     for title in titles:
         try:
             text = wiki_extract(title)
         except requests.RequestException as e:
             print(f"[research] WARNING: failed to fetch '{title}': {e}", file=sys.stderr)
             continue
-        if text:
+        if text and text not in seen:
+            seen.add(text)
             chunks.append(f"== {title} ==\n{text}")
         time.sleep(0.3)
 
@@ -73,13 +123,17 @@ def main():
         print("ERROR: fetched zero usable pages", file=sys.stderr)
         sys.exit(1)
 
-    combined = "\n\n".join(chunks)[:15000]  # bound LLM input size
+    sep = "\n\n"
+    budget = MAX_RESEARCH_CHARS - len(sep) * max(len(chunks) - 1, 0)
+    packed = pack(chunks, budget)
+    combined = sep.join(packed)
 
     os.makedirs("build", exist_ok=True)
     with open("build/research.txt", "w", encoding="utf-8") as f:
         f.write(combined)
 
-    print(f"[research] wrote build/research.txt ({len(combined)} chars, {len(chunks)} sources)")
+    # `packed`, not `chunks`: a source squeezed to nothing by the budget is dropped.
+    print(f"[research] wrote build/research.txt ({len(combined)} chars, {len(packed)} sources)")
 
 
 if __name__ == "__main__":

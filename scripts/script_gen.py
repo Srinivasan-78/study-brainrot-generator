@@ -5,6 +5,8 @@ import sys
 import json
 import time
 
+BUILD_DIR = "build"
+
 SYSTEM_PROMPT = """You are a study-content scriptwriter for short vertical educational videos.
 Given source material on a topic, produce 12 concept chunks that teach the topic
 in a punchy, fast-paced "brainrot style" — short sentences, high energy, no fluff.
@@ -120,6 +122,10 @@ def call_gemini(prompt, api_key):
                 resp = client.models.generate_content(
                     model=model_name, contents=prompt, config=config
                 )
+                if not resp.text:
+                    last_err = RuntimeError(f"{model_name} returned an empty response")
+                    print(f"[script_gen] {model_name}: empty response, trying next model", file=sys.stderr)
+                    continue
                 print(f"[script_gen] Gemini succeeded with {model_name}")
                 return strip_fences(resp.text)
             except errors.ClientError as e:
@@ -171,7 +177,35 @@ def call_deepseek(prompt, api_key):
     raise last_err
 
 
+def check_existing():
+    """Validate a script.json that was supplied instead of generated."""
+    path = f"{BUILD_DIR}/script.json"
+    try:
+        with open(path, encoding="utf-8") as f:
+            data = json.load(f)
+        data = validate(data)
+    except FileNotFoundError:
+        print(f"ERROR: {path} not found", file=sys.stderr)
+        sys.exit(1)
+    except (json.JSONDecodeError, ValueError) as e:
+        print(f"ERROR: supplied script is invalid: {e}", file=sys.stderr)
+        sys.exit(1)
+
+    topic = os.environ.get("TOPIC")
+    if topic:
+        data.setdefault("topic", topic)
+    with open(path, "w", encoding="utf-8") as f:
+        json.dump(data, f, indent=2)
+
+    words = sum(len(c["text"].split()) for c in data["chunks"])
+    print(f"[script_gen] supplied script ok: {len(data['chunks'])} chunks, ~{words} words")
+
+
 def main():
+    if "--check" in sys.argv[1:]:
+        check_existing()
+        return
+
     topic = os.environ.get("TOPIC")
     gemini_key = os.environ.get("GEMINI_API_KEY")
     deepseek_key = os.environ.get("DEEPSEEK_API_KEY")
@@ -183,7 +217,7 @@ def main():
         print("ERROR: neither GEMINI_API_KEY nor DEEPSEEK_API_KEY set", file=sys.stderr)
         sys.exit(1)
 
-    with open("build/research.txt", encoding="utf-8") as f:
+    with open(f"{BUILD_DIR}/research.txt", encoding="utf-8") as f:
         research_text = f.read()
 
     prompt = build_prompt(topic, research_text)
@@ -221,13 +255,12 @@ def main():
     data.setdefault("topic", topic)
 
     chunks = data["chunks"]
-    os.makedirs("build", exist_ok=True)
-    with open("build/script.json", "w", encoding="utf-8") as f:
+    with open(f"{BUILD_DIR}/script.json", "w", encoding="utf-8") as f:
         json.dump(data, f, indent=2)
 
     words = sum(len(c["text"].split()) for c in chunks)
     print(
-        f"[script_gen] wrote build/script.json via {provider_used}: "
+        f"[script_gen] wrote {BUILD_DIR}/script.json via {provider_used}: "
         f"{len(chunks)} chunks, ~{words} words (~{words / 2.5:.0f}s of speech)"
     )
 

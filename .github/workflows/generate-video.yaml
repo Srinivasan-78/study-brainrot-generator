@@ -35,11 +35,24 @@ jobs:
             requirements.txt
           sparse-checkout-cone-mode: false
 
+      # Inputs are passed through env rather than interpolated into the shell:
+      # `${{ }}` is substituted before bash parses the line, so a raw input would
+      # be executed as shell code.
       - name: Fetch only the selected background series
+        env:
+          BACKGROUND_GROUP: ${{ inputs.background_group }}
         run: |
-          git sparse-checkout add "assets/${{ inputs.background_group }}*"
+          case "$BACKGROUND_GROUP" in
+            "" | *[!A-Za-z0-9_-]*)
+              echo "ERROR: background_group must be alphanumeric (got '$BACKGROUND_GROUP')" >&2
+              exit 1
+              ;;
+          esac
+          # Both patterns are needed: series clips are `part_00.mp4`, standalone
+          # clips are `1.mp4`. `part_*` also keeps `partty_*` out of the fetch.
+          git sparse-checkout add "assets/${BACKGROUND_GROUP}_*" "assets/${BACKGROUND_GROUP}.*"
           echo "Clips fetched:"
-          ls -la assets/ | head -20
+          ls -la assets/
 
       - uses: actions/setup-python@v5
         with:
@@ -54,12 +67,13 @@ jobs:
 
       - name: Use supplied script
         if: inputs.manual_script != ''
+        env:
+          MANUAL_SCRIPT: ${{ inputs.manual_script }}
+          TOPIC: ${{ inputs.topic }}
         run: |
           mkdir -p build
-          cat > build/script.json <<'SCRIPT_JSON'
-          ${{ inputs.manual_script }}
-          SCRIPT_JSON
-          python -c "import json;d=json.load(open('build/script.json'));print(f'{len(d[\"chunks\"])} chunks supplied')"
+          printf '%s' "$MANUAL_SCRIPT" > build/script.json
+          python scripts/script_gen.py --check
 
       - name: Research
         if: inputs.manual_script == ''
