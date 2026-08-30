@@ -18,6 +18,11 @@ on:
         default: ""
         type: string
 
+# Read-only: this job clones, renders and uploads an artifact. It never writes
+# to the repository, so its token should not be able to.
+permissions:
+  contents: read
+
 jobs:
   generate:
     runs-on: ubuntu-latest
@@ -39,9 +44,11 @@ jobs:
       # `${{ }}` is substituted before bash parses the line, so a raw input would
       # be executed as shell code.
       - name: Fetch only the selected background series
+        shell: bash
         env:
           BACKGROUND_GROUP: ${{ inputs.background_group }}
         run: |
+          set -euo pipefail
           case "$BACKGROUND_GROUP" in
             "" | *[!A-Za-z0-9_-]*)
               echo "ERROR: background_group must be alphanumeric (got '$BACKGROUND_GROUP')" >&2
@@ -52,7 +59,24 @@ jobs:
           # clips are `1.mp4`. `part_*` also keeps `partty_*` out of the fetch.
           git sparse-checkout add "assets/${BACKGROUND_GROUP}_*" "assets/${BACKGROUND_GROUP}.*"
           echo "Clips fetched:"
-          ls -la assets/
+          ls -la assets/ || true
+
+          # Alphanumeric is not the same as existing. Without this check a
+          # valid-looking typo got through here and only failed in assemble.py
+          # at the very end -- after the Wikipedia research, a quota-limited LLM
+          # call and the whole edge-tts synthesis had already run. Fail in the
+          # first step instead, and say what the real choices are.
+          shopt -s nullglob
+          clips=( "assets/${BACKGROUND_GROUP}"_*.mp4 "assets/${BACKGROUND_GROUP}".mp4 )
+          if [ ${#clips[@]} -eq 0 ]; then
+            echo "ERROR: no clips for background_group '$BACKGROUND_GROUP'." >&2
+            echo "Available series:" >&2
+            git ls-tree --name-only HEAD assets/ \
+              | sed -E 's#^assets/##; s#_[0-9]+\.mp4$##; s#\.mp4$##' \
+              | sort -u | sed 's/^/  /' >&2
+            exit 1
+          fi
+          echo "Matched ${#clips[@]} clip(s) for '$BACKGROUND_GROUP'."
 
       - uses: actions/setup-python@v5
         with:
