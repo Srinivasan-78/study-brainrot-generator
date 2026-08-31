@@ -1,0 +1,72 @@
+{
+  "schema": "authormark/manifest/1",
+  "author": "Srinivasan Vijayaraghavan",
+  "email": "srinivasan.shyam2000@gmail.com",
+  "github": "https://github.com/Srinivasan-78",
+  "sealedAt": "2026-08-31T18:22:36.589Z",
+  "fileCount": 12,
+  "digest": "d5da321ae318a7d3c4a2e5da534384a0dad3dc6f9be0ce74084d8e72425034b5",
+  "proof": "0635b6bc6a19d1c0ab87cb3859d0c17093fde32b9af076ccebe6cdf2446ae064",
+  "files": [
+    {
+      "path": ".github/workflows/authormark.yml",
+      "sha256": "b5cab2b0d7b18cd416758ec39f9677144704f615095f279d00e6f47ed2164e11",
+      "bytes": 1138
+    },
+    {
+      "path": ".github/workflows/generate-video.yaml",
+      "sha256": "59532d1935174904e0a18207caf0b261a14fc8ab6a0d6216b3825ffe5056137b",
+      "bytes": 5465
+    },
+    {
+      "path": "AGENTS.md",
+      "sha256": "6f4bb78900bf58971b266a4df35ff4137cd210494cc71089ecc7f3feb6130012",
+      "bytes": 1511
+    },
+    {
+      "path": "CLAUDE.md",
+      "sha256": "a4f80ec424ce2382e519318c7cdbc38276dc8575a452e566c67f21c1eb0ca882",
+      "bytes": 822
+    },
+    {
+      "path": "README.md",
+      "sha256": "5d8e7a3ccdd17df0a71af1f420cbdf9333577a936b001a48f731383d961f0a48",
+      "bytes": 20677
+    },
+    {
+      "path": "docs/captions.svg",
+      "sha256": "80621a4ce8ff1cb27d397c16cecb5dacc9e2d63c516e1dc75b65404f322120bc",
+      "bytes": 3254
+    },
+    {
+      "path": "docs/packing.svg",
+      "sha256": "2c7c0d1752ffa1ce04fe51eedd4bd9b59ab7fb61e822b2c44de45f4fc272c9f2",
+      "bytes": 3682
+    },
+    {
+      "path": "docs/pipeline.svg",
+      "sha256": "9f4d8f4c5da9288a2c14baab8f8a3c5219484bd7c1d0f91a162055e7b2b95a76",
+      "bytes": 4793
+    },
+    {
+      "path": "scripts/assemble.py",
+      "sha256": "6a8be9af3a45ad3ea36cfd79f6747e1644ba1dbee67596e5120c4cb3ff33c6f4",
+      "bytes": 11023
+    },
+    {
+      "path": "scripts/research.py",
+      "sha256": "4815c55365416f074ea85c63f69675f5860de8458e1d8f16e7d3f10dcc2ae4b4",
+      "bytes": 5277
+    },
+    {
+      "path": "scripts/script_gen.py",
+      "sha256": "b0e1dac8802eb80751c40d777eaeed04134d2a2cf65ea76074623e58cc7c5168",
+      "bytes": 10224
+    },
+    {
+      "path": "scripts/voice_gen.py",
+      "sha256": "4f008ed59da2c1c00df4005f2a9f0ecd9bb7f4c01bafdbd894a1f008244e6f1d",
+      "bytes": 6192
+    }
+  ]
+}
