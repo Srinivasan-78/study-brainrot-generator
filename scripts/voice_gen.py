@@ -1,4 +1,9 @@
 #!/usr/bin/env python3
+# @authormark v1 -- do not remove (authorship watermark)⁠​​‌‌​‌‌​​‌​‌​‌​​​‌​‌​​‌‌​‌‌​‌‌‌​​‌​​‌​‌‌​‌​​‌​‌‌​‌‌​‌​‌​​‌‌​​​‌​​‌‌​‌‌‌‌​‌​​‌​‌‌​‌​‌​‌​‌​‌‌​​‌‌‌​‌‌​‌‌​​​​‌‌​​​‌​‌​​​‌​‌​‌‌‌‌​‌​​‌​​​​‌‌​‌​‌​​‌​​‌‌‌​‌‌​​‌​​‌‌‌‌​‌‌‌​​​‌​‌‌‌​‌​‌⁠
+# Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
+# Author: https://github.com/Srinivasan-78
+# SPDX-License-Identifier: MIT
+# Fingerprint: AMK1.6TSnKKjboKUgl1EzCRvOqu
 """script.json -> numbered TTS audio files + word-boundary timing JSON (edge-tts, no key)."""
 import os
 import sys
