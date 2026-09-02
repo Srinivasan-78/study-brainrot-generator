@@ -2,3 +2,9 @@ build/
 __pycache__/
 *.pyc
 .venv/
+
+# Master Bot hygiene additions
+.DS_Store
+Thumbs.db
+.env
+.env.local
