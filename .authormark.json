@@ -5,5 +5,5 @@
   "year": 2026,
   "license": "MIT",
   "keyFile": "~/.authormark.key",
-  "ignore": []
+  "ignore": [".github", "assets", "docs", "*.svg", "*.mp4"]
 }

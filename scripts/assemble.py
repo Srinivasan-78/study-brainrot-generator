@@ -75,7 +75,7 @@ def background_groups():
     part_00..part_18 form one continuous series, partty_00..partty_07 another,
     and bare-numeric files (1.mp4, 2.mp4) are each standalone.
     """
-    candidates = glob.glob(f"{BACKGROUND_DIR}/*.mp4") + glob.glob(f"{BACKGROUND_DIR}/*.mov")
+    candidates = glob.glob(f"{BACKGROUND_DIR}/*.mp4")
     if not candidates:
         print(f"ERROR: no background loop videos found in {BACKGROUND_DIR}/", file=sys.stderr)
         sys.exit(1)

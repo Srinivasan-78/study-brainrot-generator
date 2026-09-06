@@ -59,54 +59,13 @@ def strip_fences(s):
     return s.strip()
 
 
-EXCLUDE_TOKENS = (
-    "preview", "-exp", "experimental", "omni", "thinking", "tts",
-    "audio", "image", "live", "embedding", "learnlm", "gemma", "vision",
-)
-
-
-def rank_gemini_models(client):
-    """Return candidate model names, best free-tier bet first.
-
-    Preview/experimental models frequently report a free-tier quota of 0, so they
-    are ranked last and only used if nothing stable is available.
-    """
+def rank_gemini_models(client=None):
+    """Return candidate model names, respecting GEMINI_MODEL env override."""
     override = os.environ.get("GEMINI_MODEL")
     if override:
         return [override]
+    return ["gemini-2.5-flash", "gemini-2.0-flash"]
 
-    try:
-        names = [m.name.replace("models/", "") for m in client.models.list()]
-    except Exception as e:
-        print(f"[script_gen] WARNING: could not list Gemini models ({e})", file=sys.stderr)
-        names = []
-
-    names = [n for n in names if n.startswith("gemini")]
-
-    def score(name):
-        stable = not any(t in name for t in EXCLUDE_TOKENS)
-        is_flash = "flash" in name
-        is_lite = "lite" in name
-        is_alias = name.endswith("-latest")
-        # lower sorts first
-        return (
-            0 if stable else 1,
-            0 if is_flash else 1,
-            0 if is_lite else 1,   # lite has the most generous free RPM
-            0 if is_alias else 1,
-            name,
-        )
-
-    ranked = sorted(set(names), key=score)
-    fallbacks = ["gemini-flash-lite-latest", "gemini-flash-latest"]
-    for fb in fallbacks:
-        if fb not in ranked:
-            ranked.append(fb)
-
-    if not ranked:
-        ranked = fallbacks
-    print(f"[script_gen] Gemini candidates: {ranked[:5]}")
-    return ranked[:5]
 
 
 def call_gemini(prompt, api_key):
