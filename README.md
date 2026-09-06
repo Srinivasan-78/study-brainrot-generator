@@ -148,17 +148,9 @@ Output: `build/research.txt`.
 Sends the research text to an AI with strict orders: **12 chunks, 25–35 words each, punchy,
 chunk 1 must be a scroll-stopping hook, reply with JSON only.**
 
-Gemini doesn't have just one model — it has dozens, and which ones are free changes over time.
-So the robot **asks Gemini for the current list** and sorts it into a preference order:
+The writer defaults to Google's fast, high-rate-limit models (`gemini-2.5-flash` and `gemini-2.0-flash`), or whatever specific model you pass in the `GEMINI_MODEL` environment variable.
 
-1. Stable models before preview/experimental ones (previews often have a free quota of exactly zero)
-2. `flash` models before the big slow ones
-3. `flash-lite` first of all — it has the most generous free requests-per-minute
-4. `-latest` aliases before pinned version numbers
-
-Then it works down that list. If a model says **429 (out of quota)** or **404 (doesn't exist)**,
-it shrugs and tries the next one. If all five fail, it waits 40 seconds and does the whole pass
-again. If Gemini is truly done for the day, it falls back to **DeepSeek**.
+If a model says **429 (out of quota)** or **404 (doesn't exist)**, it tries the fallback model. If Gemini is unavailable, it falls back to **DeepSeek**.
 
 But a `400` or `403` is different — that means *your key is wrong or your request is malformed*,
 which retrying will never fix. Those crash immediately, on purpose, so you get told instead of
