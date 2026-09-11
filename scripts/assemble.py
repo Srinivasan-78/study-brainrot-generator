@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
-# @authormark v1 -- do not remove (authorship watermark)⁠​‌​‌​‌​​​‌​​​​​‌​​‌‌​​‌​​​‌‌​‌‌​​‌‌​‌‌​​​​‌​‌‌​‌​​‌‌​​​‌​‌‌​‌​​​​‌​​‌‌‌‌​‌‌​‌​‌​​‌‌‌​‌‌‌​‌‌​​​​‌​‌‌​​​‌​​‌‌​‌​​‌​‌‌​‌‌‌‌​‌​​​​‌‌​​‌‌​​​​​‌​‌‌​​‌​‌​​‌​‌‌​‌​‌‌​​​​‌‌‌‌​​‌​‌‌‌​‌​‌⁠
+# @authormark v1 -- do not remove (authorship watermark)⁠​​‌‌​‌‌‌​‌​​​​​‌​‌​​​​‌‌​‌‌​​‌​​​‌‌‌‌​​​​‌​‌‌‌‌‌​‌‌​‌‌​‌​‌‌‌‌​‌​​‌​‌​‌‌​​‌‌​‌‌​‌​‌‌​​​​‌​‌​‌‌​​‌​‌​‌‌​​​​‌‌​‌‌​​​‌‌‌​‌​​​‌​​‌‌‌​​‌‌‌​​‌​​‌‌​​‌​​​​‌‌​‌​‌​​‌‌‌​​​​‌​​‌‌​​​‌‌‌​‌​​⁠
 # Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
 # Author: https://github.com/Srinivasan-78
 # SPDX-License-Identifier: MIT
-# Fingerprint: AMK1.TA26l-1hOjwabioC0YKXyu
+# Fingerprint: AMK1.7ACdx_mzVmaYXltNrd58Lt
 """audio + word timings + background series -> captioned vertical MP4s.
 
 Emits one MP4 per ~MAX_VIDEO_SECONDS of content so a long script becomes several
