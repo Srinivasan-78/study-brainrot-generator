@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
-# @authormark v1 -- do not remove (authorship watermark)⁠​‌​​​​​‌​‌​​​‌​‌​‌​​‌​‌‌​‌‌‌​​​‌​‌‌​​‌‌​​‌‌‌​‌‌‌​‌​‌​‌‌​​‌‌​‌‌‌‌​‌‌​‌‌‌​​‌‌‌​‌‌‌​​‌‌​‌‌‌​‌‌​‌‌‌‌​‌​‌​‌​​​‌​​‌‌‌‌​‌‌​‌‌‌‌​‌‌‌​‌​​​‌​​​​​‌​‌​‌​‌‌​​​‌‌​​‌‌​‌‌​‌‌​‌​‌‌​‌‌‌‌​‌​​​‌‌​⁠
+# @authormark v1 -- do not remove (authorship watermark)⁠​​‌‌​‌‌‌​‌​​‌‌‌​​‌​​​​‌‌​‌​‌​​‌‌​‌​‌​‌‌​​‌‌​‌‌‌​​‌​‌​​​​​​‌​‌‌​‌​‌​​‌‌​​​‌​‌​‌‌​​‌​​‌‌‌​​​‌‌​‌​‌​‌‌​​​‌‌​‌‌‌​‌​​​‌​​‌‌​‌​​‌‌​‌​‌​​‌‌​‌​​​‌‌​‌‌‌​​‌​‌​‌​​​​‌‌​‌​‌​‌‌​​​‌‌​​‌‌‌​​​⁠
 # Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
 # Author: https://github.com/Srinivasan-78
 # SPDX-License-Identifier: MIT
-# Fingerprint: AMK1.AEKqfwVonw7oTOotAV3moF
+# Fingerprint: AMK1.7NCSVnP-LVN5ctM54nT5c8
 """topic -> grounding text (Wikipedia REST API, no key needed)."""
 import os
 import sys
