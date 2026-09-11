@@ -1,0 +1,10 @@
+# Normalise line endings: the AuthorMark fingerprint canonicaliser assumes LF in
+# the repo regardless of the checkout platform.
+* text=auto eol=lf
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.mp4 binary
+*.mp3 binary
+*.wav binary
